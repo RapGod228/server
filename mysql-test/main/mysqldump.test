@@ -2897,7 +2897,7 @@ CREATE TABLE t1(a int);
 INSERT INTO t1 VALUES (2),(5),(11);
 CREATE TABLE t2(a int);
 INSERT INTO t2 VALUES (21),(52),(131);
---exec $MYSQL_DUMP --wildcards=ON test1 t_ 
+--exec $MYSQL_DUMP --skip-comments --wildcards=ON test1 t_ 
 DROP DATABASE test1;
 
 CREATE DATABASE test1;
@@ -2906,7 +2906,7 @@ CREATE TABLE t1(a int);
 INSERT INTO t1 VALUES (2),(5),(11);
 CREATE TABLE t2(a int);
 INSERT INTO t2 VALUES (21),(52),(131);
---exec $MYSQL_DUMP --wildcards=ON test1 t1 
+--exec $MYSQL_DUMP --skip-comments --wildcards=ON test1 t% 
 DROP DATABASE test1;
 
 CREATE DATABASE test1;
@@ -2917,8 +2917,24 @@ CREATE DATABASE test2;
 USE test2;
 CREATE TABLE t1(a int);
 INSERT INTO t1 VALUES (2),(5),(11);
---exec $MYSQL_DUMP --databases --wildcards=ON test_ 
+--exec $MYSQL_DUMP --skip-comments --databases --wildcards=ON test_ 
 DROP DATABASE test1;
 DROP DATABASE test2;
+
+
+CREATE DATABASE test1;
+USE test1;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+CREATE TABLE tt(a int);
+INSERT INTO tt VALUES (2),(5),(11);
+CREATE DATABASE test2;
+USE test2;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+--exec $MYSQL_DUMP --skip-comments --databases --wildcards=ON t? 
+DROP DATABASE test1;
+DROP DATABASE test2;
+
 
 

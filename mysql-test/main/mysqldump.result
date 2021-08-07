@@ -215,7 +215,7 @@ CREATE TABLE `t1` (
 
 LOCK TABLES `t1` WRITE;
 /*!40000 ALTER TABLE `t1` DISABLE KEYS */;
-INSERT INTO `t1` VALUES ('абцде');
+INSERT INTO `t1` VALUES ('Р°Р±С†РґРµ');
 INSERT INTO `t1` VALUES (NULL);
 /*!40000 ALTER TABLE `t1` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -512,7 +512,7 @@ drop database mysqldump_test_db;
 # --default-character-set=xxx. However, we should dump in UTF8
 # if it is explicitly set.
 CREATE TABLE t1 (a  CHAR(10));
-INSERT INTO t1  VALUES (_latin1 '����');
+INSERT INTO t1  VALUES (_latin1 'ДЦЬЯ');
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -534,7 +534,7 @@ CREATE TABLE `t1` (
 
 LOCK TABLES `t1` WRITE;
 /*!40000 ALTER TABLE `t1` DISABLE KEYS */;
-INSERT INTO `t1` VALUES ('ÄÖÜß');
+INSERT INTO `t1` VALUES ('Г„Г–ГњГџ');
 /*!40000 ALTER TABLE `t1` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -567,7 +567,7 @@ CREATE TABLE `t1` (
 
 LOCK TABLES `t1` WRITE;
 /*!40000 ALTER TABLE `t1` DISABLE KEYS */;
-INSERT INTO `t1` VALUES ('����');
+INSERT INTO `t1` VALUES ('Ћ™љб');
 /*!40000 ALTER TABLE `t1` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -590,7 +590,7 @@ CREATE TABLE `t1` (
 
 LOCK TABLES `t1` WRITE;
 /*!40000 ALTER TABLE `t1` DISABLE KEYS */;
-INSERT INTO `t1` VALUES ('����');
+INSERT INTO `t1` VALUES ('Ћ™љб');
 /*!40000 ALTER TABLE `t1` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -613,7 +613,7 @@ CREATE TABLE `t1` (
 
 LOCK TABLES `t1` WRITE;
 /*!40000 ALTER TABLE `t1` DISABLE KEYS */;
-INSERT INTO `t1` VALUES ('ÄÖÜß');
+INSERT INTO `t1` VALUES ('Г„Г–ГњГџ');
 /*!40000 ALTER TABLE `t1` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -1810,11 +1810,11 @@ create table t1 (a text character set utf8, b text character set latin1);
 insert t1 values (0x4F736E616272C3BC636B, 0x4BF66C6E);
 select * from t1;
 a	b
-Osnabr�ck	K�ln
+Osnabrьck	Kцln
 test.t1: Records: 1  Deleted: 0  Skipped: 0  Warnings: 0
 select * from t1;
 a	b
-Osnabr�ck	K�ln
+Osnabrьck	Kцln
 drop table t1;
 #
 # Bug#15328 Segmentation fault occurred if my.cnf is invalid for escape sequence
@@ -4013,21 +4013,21 @@ drop database db42635;
 # Bug#33550 mysqldump 4.0 compatibility broken
 #
 SET NAMES utf8;
-CREATE TABLE `straße` ( f1 INT );
+CREATE TABLE `straГџe` ( f1 INT );
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO,MYSQL323' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-DROP TABLE IF EXISTS `straße`;
-CREATE TABLE `straße` (
+DROP TABLE IF EXISTS `straГџe`;
+CREATE TABLE `straГџe` (
   `f1` int(11) DEFAULT NULL
 ) TYPE=MyISAM;
 
-LOCK TABLES `straße` WRITE;
-/*!40000 ALTER TABLE `straße` DISABLE KEYS */;
-/*!40000 ALTER TABLE `straße` ENABLE KEYS */;
+LOCK TABLES `straГџe` WRITE;
+/*!40000 ALTER TABLE `straГџe` DISABLE KEYS */;
+/*!40000 ALTER TABLE `straГџe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -4042,14 +4042,14 @@ UNLOCK TABLES;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO,MYSQL323' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-DROP TABLE IF EXISTS `stra�e`;
-CREATE TABLE `stra�e` (
+DROP TABLE IF EXISTS `straЯe`;
+CREATE TABLE `straЯe` (
   `f1` int(11) DEFAULT NULL
 ) TYPE=MyISAM;
 
-LOCK TABLES `stra�e` WRITE;
-/*!40000 ALTER TABLE `stra�e` DISABLE KEYS */;
-/*!40000 ALTER TABLE `stra�e` ENABLE KEYS */;
+LOCK TABLES `straЯe` WRITE;
+/*!40000 ALTER TABLE `straЯe` DISABLE KEYS */;
+/*!40000 ALTER TABLE `straЯe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -4058,22 +4058,22 @@ UNLOCK TABLES;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
-DROP TABLE `straße`;
-CREATE TABLE `כדשגכחךלדגכחשךדגחכךלדגכ` ( f1 INT );
+DROP TABLE `straГџe`;
+CREATE TABLE `Ч›Ч“Ч©Ч’Ч›Ч—ЧљЧњЧ“Ч’Ч›Ч—Ч©ЧљЧ“Ч’Ч—Ч›ЧљЧњЧ“Ч’Ч›` ( f1 INT );
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO,MYSQL323' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-DROP TABLE IF EXISTS `כדשגכחךלדגכחשךדגחכךלדגכ`;
-CREATE TABLE `כדשגכחךלדגכחשךדגחכךלדגכ` (
+DROP TABLE IF EXISTS `Ч›Ч“Ч©Ч’Ч›Ч—ЧљЧњЧ“Ч’Ч›Ч—Ч©ЧљЧ“Ч’Ч—Ч›ЧљЧњЧ“Ч’Ч›`;
+CREATE TABLE `Ч›Ч“Ч©Ч’Ч›Ч—ЧљЧњЧ“Ч’Ч›Ч—Ч©ЧљЧ“Ч’Ч—Ч›ЧљЧњЧ“Ч’Ч›` (
   `f1` int(11) DEFAULT NULL
 ) TYPE=MyISAM;
 
-LOCK TABLES `כדשגכחךלדגכחשךדגחכךלדגכ` WRITE;
-/*!40000 ALTER TABLE `כדשגכחךלדגכחשךדגחכךלדגכ` DISABLE KEYS */;
-/*!40000 ALTER TABLE `כדשגכחךלדגכחשךדגחכךלדגכ` ENABLE KEYS */;
+LOCK TABLES `Ч›Ч“Ч©Ч’Ч›Ч—ЧљЧњЧ“Ч’Ч›Ч—Ч©ЧљЧ“Ч’Ч—Ч›ЧљЧњЧ“Ч’Ч›` WRITE;
+/*!40000 ALTER TABLE `Ч›Ч“Ч©Ч’Ч›Ч—ЧљЧњЧ“Ч’Ч›Ч—Ч©ЧљЧ“Ч’Ч—Ч›ЧљЧњЧ“Ч’Ч›` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Ч›Ч“Ч©Ч’Ч›Ч—ЧљЧњЧ“Ч’Ч›Ч—Ч©ЧљЧ“Ч’Ч—Ч›ЧљЧњЧ“Ч’Ч›` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -4088,7 +4088,7 @@ UNLOCK TABLES;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO,MYSQL323' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-DROP TABLE `כדשגכחךלדגכחשךדגחכךלדגכ`;
+DROP TABLE `Ч›Ч“Ч©Ч’Ч›Ч—ЧљЧњЧ“Ч’Ч›Ч—Ч©ЧљЧ“Ч’Ч—Ч›ЧљЧњЧ“Ч’Ч›`;
 SET NAMES latin1;
 #
 # End of 5.0 tests
@@ -4444,8 +4444,8 @@ DROP DATABASE IF EXISTS mysqldump_test_db;
 # Create objects.
 CREATE DATABASE mysqldump_test_db;
 set names koi8r;
-CREATE VIEW mysqldump_test_db.v2 AS SELECT 1 AS �������1;
-CREATE VIEW mysqldump_test_db.v1 AS SELECT �������1 FROM mysqldump_test_db.v2;
+CREATE VIEW mysqldump_test_db.v2 AS SELECT 1 AS ЛПМПОЛБ1;
+CREATE VIEW mysqldump_test_db.v1 AS SELECT ЛПМПОЛБ1 FROM mysqldump_test_db.v2;
 set names latin1;
 
 # Dump mysqldump_test_db to bug30027.sql.
@@ -4459,10 +4459,10 @@ DROP DATABASE mysqldump_test_db;
 set names utf8;
 SHOW CREATE VIEW mysqldump_test_db.v1;
 View	Create View	character_set_client	collation_connection
-v1	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `mysqldump_test_db`.`v1` AS select `v2`.`колонка1` AS `колонка1` from `mysqldump_test_db`.`v2`	koi8r	koi8r_general_ci
+v1	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `mysqldump_test_db`.`v1` AS select `v2`.`РєРѕР»РѕРЅРєР°1` AS `РєРѕР»РѕРЅРєР°1` from `mysqldump_test_db`.`v2`	koi8r	koi8r_general_ci
 SHOW CREATE VIEW mysqldump_test_db.v2;
 View	Create View	character_set_client	collation_connection
-v2	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `mysqldump_test_db`.`v2` AS select 1 AS `колонка1`	koi8r	koi8r_general_ci
+v2	CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `mysqldump_test_db`.`v2` AS select 1 AS `РєРѕР»РѕРЅРєР°1`	koi8r	koi8r_general_ci
 set names latin1;
 
 # Cleanup.
@@ -4625,53 +4625,53 @@ DROP TABLE IF EXISTS t1;
 SET NAMES utf8;
 CREATE TABLE t1 (a INT, b CHAR(10) CHARSET koi8r, c CHAR(10) CHARSET latin1);
 CREATE TABLE t2 LIKE t1;
-INSERT INTO t1 VALUES (1, 'ABC-АБВ', 'DEF-ÂÃÄ'), (2, NULL, NULL);
+INSERT INTO t1 VALUES (1, 'ABC-РђР‘Р’', 'DEF-Г‚ГѓГ„'), (2, NULL, NULL);
 # error on multi-character ENCLOSED/ESCAPED BY
 # default '--default-charset' (binary):
 ##################################################
-1	ABC-���	DEF-���
+1	ABC-бвч	DEF-ВГД
 2	\N	\N
 ##################################################
 TRUNCATE t2;
 LOAD DATA INFILE 'MYSQLTEST_VARDIR/tmp/t1.txt' INTO TABLE t2 CHARACTER SET binary;
 SELECT * FROM t1 UNION SELECT * FROM t2 ORDER BY a, b, c;
 a	b	c
-1	ABC-АБВ	DEF-ÂÃÄ
+1	ABC-РђР‘Р’	DEF-Г‚ГѓГ„
 2	NULL	NULL
 # utf8:
 ##################################################
-1	ABC-АБВ	DEF-ÂÃÄ
+1	ABC-РђР‘Р’	DEF-Г‚ГѓГ„
 2	\N	\N
 ##################################################
 TRUNCATE t2;
 LOAD DATA INFILE 'MYSQLTEST_VARDIR/tmp/t1.txt' INTO TABLE t2 CHARACTER SET utf8;
 SELECT * FROM t1 UNION SELECT * FROM t2 ORDER BY a, b, c;
 a	b	c
-1	ABC-АБВ	DEF-ÂÃÄ
+1	ABC-РђР‘Р’	DEF-Г‚ГѓГ„
 2	NULL	NULL
 # latin1 (data corruption is expected):
 ##################################################
-1	ABC-???	DEF-���
+1	ABC-???	DEF-ВГД
 2	\N	\N
 ##################################################
 TRUNCATE t2;
 LOAD DATA INFILE 'MYSQLTEST_VARDIR/tmp/t1.txt' INTO TABLE t2 CHARACTER SET latin1 ;
 SELECT * FROM t1 UNION SELECT * FROM t2 ORDER BY a, b, c;
 a	b	c
-1	ABC-???	DEF-ÂÃÄ
-1	ABC-АБВ	DEF-ÂÃÄ
+1	ABC-???	DEF-Г‚ГѓГ„
+1	ABC-РђР‘Р’	DEF-Г‚ГѓГ„
 2	NULL	NULL
 # koi8r (data corruption is expected):
 ##################################################
-1	ABC-���	DEF-???
+1	ABC-бвч	DEF-???
 2	\N	\N
 ##################################################
 TRUNCATE t2;
 LOAD DATA INFILE 'MYSQLTEST_VARDIR/tmp/t1.txt' INTO TABLE t2 CHARACTER SET koi8r;
 SELECT * FROM t1 UNION SELECT * FROM t2 ORDER BY a, b, c;
 a	b	c
-1	ABC-АБВ	DEF-???
-1	ABC-АБВ	DEF-ÂÃÄ
+1	ABC-РђР‘Р’	DEF-???
+1	ABC-РђР‘Р’	DEF-Г‚ГѓГ„
 2	NULL	NULL
 SET NAMES default;
 DROP TABLE t1, t2;
@@ -5170,16 +5170,16 @@ DROP DATABASE BUG52792;
 CREATE DATABASE BUG52792;
 USE BUG52792;
 SET NAMES utf8;
-CREATE FUNCTION `straße` ( c1 CHAR(20))
+CREATE FUNCTION `straГџe` ( c1 CHAR(20))
 RETURNS CHAR(50) DETERMINISTIC
 RETURN CONCAT(']]>, ', c1, '!');
 <?xml version="1.0"?>
 <mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <database name="BUG52792">
 	<routines>
-		<routine Function="straße" sql_mode="" character_set_client="utf8mb3" collation_connection="utf8mb3_general_ci" Database_Collation="latin1_swedish_ci">
+		<routine Function="straГџe" sql_mode="" character_set_client="utf8mb3" collation_connection="utf8mb3_general_ci" Database_Collation="latin1_swedish_ci">
 <![CDATA[
-CREATE DEFINER=`root`@`localhost` FUNCTION `straße`(c1 CHAR(20)) RETURNS char(50) CHARSET latin1
+CREATE DEFINER=`root`@`localhost` FUNCTION `straГџe`(c1 CHAR(20)) RETURNS char(50) CHARSET latin1
     DETERMINISTIC
 RETURN CONCAT(']]]]><![CDATA[>, ', c1, '!')
 ]]>
@@ -5310,7 +5310,7 @@ create table t1 (g GEOMETRY) CHARSET koi8r;
 create table t2 (g GEOMETRY) CHARSET koi8r;
 insert into t1 values (point(1,1)), (point(2,2));
 ##################################################
-\0\0\0\0\0\0\0\0\0\0\0\0\0�?\0\0\0\0\0\0�?
+\0\0\0\0\0\0\0\0\0\0\0\0\0р?\0\0\0\0\0\0р?
 \0\0\0\0\0\0\0\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@
 ##################################################
 LOAD DATA INFILE 'MYSQLTEST_VARDIR/tmp/t1.txt' INTO TABLE t2 CHARACTER SET koi8r;
@@ -6050,7 +6050,7 @@ insert into t3 values(1);
 insert into t3 values(5);
 insert into t3 values(2);
 insert into t3(`invisible`,  `a  b c & $!@#$%^&*( )`, `ds=~!@ \# $% ^ & * ( ) _ - = +` ) values(1,2,3);
-CREATE TABLE t4(ËÏÌÏÎËÁ1 INT);
+CREATE TABLE t4(Г‹ГЏГЊГЏГЋГ‹ГЃ1 INT);
 insert into t4 values(1);
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -6080,7 +6080,7 @@ INSERT INTO `t3` (`invisible`, `a  b c & $!@#$%^&*( )`, `ds=~!@ \# $% ^ & * ( ) 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t4` (
-  `ËÏÌÏÎËÁ1` int(11) DEFAULT NULL
+  `Г‹ГЏГЊГЏГЋГ‹ГЃ1` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 INSERT INTO `t4` VALUES (1);
@@ -6113,10 +6113,10 @@ INSERT INTO `t3` (`invisible`, `a  b c & $!@#$%^&*( )`, `ds=~!@ \# $% ^ & * ( ) 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `t4` (
-  `ËÏÌÏÎËÁ1` int(11) DEFAULT NULL
+  `Г‹ГЏГЊГЏГЋГ‹ГЃ1` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-INSERT INTO `t4` (`ËÏÌÏÎËÁ1`) VALUES (1);
+INSERT INTO `t4` (`Г‹ГЏГЊГЏГЋГ‹ГЃ1`) VALUES (1);
 #Check xml
 <?xml version="1.0"?>
 <mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -6177,11 +6177,11 @@ INSERT INTO `t4` (`ËÏÌÏÎËÁ1`) VALUES (1);
 	</row>
 	</table_data>
 	<table_structure name="t4">
-		<field Field="ËÏÌÏÎËÁ1" Type="int(11)" Null="YES" Key="" Default="NULL" Extra="" Comment="" />
+		<field Field="Г‹ГЏГЊГЏГЋГ‹ГЃ1" Type="int(11)" Null="YES" Key="" Default="NULL" Extra="" Comment="" />
 	</table_structure>
 	<table_data name="t4">
 	<row>
-		<field name="ËÏÌÏÎËÁ1">1</field>
+		<field name="Г‹ГЏГЊГЏГЋГ‹ГЃ1">1</field>
 	</row>
 	</table_data>
 </database>
@@ -6330,3 +6330,210 @@ SETVAL(`seq_t_i`, 1, 0)
 DROP DATABASE IF EXISTS test1;
 DROP DATABASE IF EXISTS test2;
 # End of 10.3 tests
+# Testing wildcards
+CREATE DATABASE test1;
+USE test1;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+CREATE TABLE t2(a int);
+INSERT INTO t2 VALUES (21),(52),(131);
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `t1`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `t1` WRITE;
+/*!40000 ALTER TABLE `t1` DISABLE KEYS */;
+INSERT INTO `t1` VALUES (2),(5),(11);
+/*!40000 ALTER TABLE `t1` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `t2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t2` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `t2` WRITE;
+/*!40000 ALTER TABLE `t2` DISABLE KEYS */;
+INSERT INTO `t2` VALUES (21),(52),(131);
+/*!40000 ALTER TABLE `t2` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+DROP DATABASE test1;
+CREATE DATABASE test1;
+USE test1;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+CREATE TABLE t2(a int);
+INSERT INTO t2 VALUES (21),(52),(131);
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `t1`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `t1` WRITE;
+/*!40000 ALTER TABLE `t1` DISABLE KEYS */;
+INSERT INTO `t1` VALUES (2),(5),(11);
+/*!40000 ALTER TABLE `t1` ENABLE KEYS */;
+UNLOCK TABLES;
+DROP TABLE IF EXISTS `t2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t2` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `t2` WRITE;
+/*!40000 ALTER TABLE `t2` DISABLE KEYS */;
+INSERT INTO `t2` VALUES (21),(52),(131);
+/*!40000 ALTER TABLE `t2` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+DROP DATABASE test1;
+CREATE DATABASE test1;
+USE test1;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+CREATE DATABASE test2;
+USE test2;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `test1` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `test1`;
+DROP TABLE IF EXISTS `t1`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `t1` WRITE;
+/*!40000 ALTER TABLE `t1` DISABLE KEYS */;
+INSERT INTO `t1` VALUES (2),(5),(11);
+/*!40000 ALTER TABLE `t1` ENABLE KEYS */;
+UNLOCK TABLES;
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `test2` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `test2`;
+DROP TABLE IF EXISTS `t1`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `t1` WRITE;
+/*!40000 ALTER TABLE `t1` DISABLE KEYS */;
+INSERT INTO `t1` VALUES (2),(5),(11);
+/*!40000 ALTER TABLE `t1` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+DROP DATABASE test1;
+DROP DATABASE test2;
+CREATE DATABASE test1;
+USE test1;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+CREATE TABLE tt(a int);
+INSERT INTO tt VALUES (2),(5),(11);
+CREATE DATABASE test2;
+USE test2;
+CREATE TABLE t1(a int);
+INSERT INTO t1 VALUES (2),(5),(11);
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+DROP DATABASE test1;
+DROP DATABASE test2;
