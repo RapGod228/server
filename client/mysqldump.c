@@ -6894,17 +6894,19 @@ void dump_tablespaces_for_database_wild(char *db, char *pattern)
   mysql_select_db(mysql, db);
   my_snprintf(qq, sizeof(qq), "SHOW TABLES LIKE '%s'", pattern);
   mysql_query_with_error_report(mysql, &dbinfo, qq);
-  int number_of_tables= dbinfo->row_count;
+  int number_of_tables;
+  number_of_tables=dbinfo->row_count;
   if (!(tables_to_dump= (char **) my_malloc(
             PSI_NOT_INSTRUMENTED,
             (number_of_tables + (int) 2) * sizeof(char *), MYF(MY_WME))))
     die(EX_MYSQLERR, "Couldn't allocate memory");
   tables_to_dump[0]= db;
-  while (row= mysql_fetch_row(dbinfo))
+  while ((row= mysql_fetch_row(dbinfo)))
   {
     num++;
     tables_to_dump[num]= row[0];
   }
+  tables_to_dump[num+1]= NULL;
   if (number_of_tables > 0)
   {
     if (!opt_alltspcs && !opt_notspcs)
@@ -6918,7 +6920,6 @@ void dump_tablespaces_for_database_wild(char *db, char *pattern)
 
 void dump_databases_wild(char *db_pattern)
 {
-  int num= 0;
   MYSQL_RES *dbinfo;
   char qq[1024];
   MYSQL_ROW row;
@@ -6930,11 +6931,12 @@ void dump_databases_wild(char *db_pattern)
             PSI_NOT_INSTRUMENTED,
             (dbinfo->row_count + (int) 1) * sizeof(char *), MYF(MY_WME))))
     die(EX_MYSQLERR, "Couldn't allocate memory");
-  while (row= mysql_fetch_row(dbinfo))
+  while ((row= mysql_fetch_row(dbinfo)))
   {
     databases_to_dump[i]= row[0];
     i++;
   }
+  databases_to_dump[i]= NULL;
   if (!opt_alltspcs && !opt_notspcs)
     dump_tablespaces_for_databases(databases_to_dump);
   dump_databases(databases_to_dump);
