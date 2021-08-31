@@ -130,7 +130,7 @@ static my_bool  verbose= 0, opt_no_create_info= 0, opt_no_data= 0, opt_no_data_m
                 opt_events= 0, opt_comments_used= 0,
                 opt_alltspcs=0, opt_notspcs= 0, opt_logging,
                 opt_drop_trigger= 0, opt_wildcards=0;
-const char *wild_opts[]= {"ON", "OFF", NullS};
+const char *wild_opts[]= {"ON", "OFF", NullS};      
 TYPELIB wildcard_lib= {array_elements(wild_opts) - 1, "", wild_opts, NULL};
 #define OPT_SYSTEM_ALL 1
 #define OPT_SYSTEM_USERS 2
@@ -320,7 +320,7 @@ static struct my_option my_long_options[] =
    "Dump several databases. Note the difference in usage; in this case no tables are given. All name arguments are regarded as database names. 'USE db_name;' will be included in the output.",
    &opt_databases, &opt_databases, 0, GET_BOOL, NO_ARG, 0, 0,
    0, 0, 0, 0},
-   {"wildcards", 'd', "Usage of wildcards in the table/database name.",
+   {"wildcards", 'd', "Usage of wildcards in the table/database name. Without option \"databases\" wildcards can be used only in tables names, with option - in databases names.",
    &opt_wildcards, &opt_wildcards, &wildcard_lib, GET_BOOL, NO_ARG, 0, 0, 0,
    0, 0, 0},
 #ifdef DBUG_OFF
@@ -5034,7 +5034,7 @@ static int dump_tablespaces_for_tables(char *db, char **table_names, int tables)
                       "SELECT DISTINCT TABLESPACE_NAME FROM"
                       " INFORMATION_SCHEMA.PARTITIONS"
                       " WHERE"
-                      " TABLE_SCHEMA='", 256, 1024);
+                      " TABLE_SCHEMA='", 256, 1024)         ;
   dynstr_append_checked(&dynamic_where, name_buff);
   dynstr_append_checked(&dynamic_where, "' AND TABLE_NAME IN (");
 
@@ -6943,15 +6943,21 @@ static void dynstr_realloc_checked(DYNAMIC_STRING *str, ulong additional_size)
 
 void dump_tablespaces_for_database_wild(char *db, char *pattern)
 {
+  DBUG_ENTER("dump_tablespaces_for_database_wild");
   int num= 1;
   int number_of_tables= 0;
   MYSQL_ROW row;
-  char qq[1024];
+  char buff[NAME_LEN+30];
   MYSQL_RES *dbinfo;
   char **tables_to_dump;
   mysql_select_db(mysql, db);
-  my_snprintf(qq, sizeof(qq), "SHOW TABLES LIKE '%s'", pattern);
-  mysql_query_with_error_report(mysql, &dbinfo, qq);
+  my_snprintf(buff, sizeof(buff), "SHOW TABLES LIKE '%s'", pattern);
+  if(mysql_query_with_error_report(mysql, &dbinfo, buff))
+  {
+    fprintf(stderr, "%s: Error: '%s' when trying to find tables satisfying pattern\n",
+            my_progname_short, mysql_error(mysql));
+    DBUG_VOID_RETURN;
+  }
   number_of_tables= dbinfo->row_count;
   if (!(tables_to_dump= (char **) my_malloc(
             PSI_NOT_INSTRUMENTED,
@@ -6972,17 +6978,25 @@ void dump_tablespaces_for_database_wild(char *db, char *pattern)
                          (number_of_tables));
   }
   my_free(tables_to_dump);
+  DBUG_VOID_RETURN;
 }
 
 void dump_databases_wild(char *db_pattern)
 {
+  DBUG_ENTER("dump_tablespaces_for_database_wild");
   MYSQL_RES *dbinfo;
-  char qq[1024];
+  char buff[NAME_LEN+30];
   MYSQL_ROW row;
   int i= 0;
   char **databases_to_dump;
-  my_snprintf(qq, sizeof(qq), "SHOW DATABASES LIKE '%s'", db_pattern);
-  mysql_query_with_error_report(mysql, &dbinfo, qq);
+  my_snprintf(buff, sizeof(buff), "SHOW DATABASES LIKE '%s'", db_pattern);
+  if (mysql_query_with_error_report(mysql, &dbinfo, buff))
+  {
+    fprintf(stderr,
+            "%s: Error: '%s' when trying to find databases satisfying pattern\n",
+            my_progname_short, mysql_error(mysql));
+    DBUG_VOID_RETURN;
+  }
   if (!(databases_to_dump= (char **) my_malloc(
             PSI_NOT_INSTRUMENTED,
             (dbinfo->row_count + (int) 1) * sizeof(char *), MYF(MY_WME))))
@@ -6996,22 +7010,9 @@ void dump_databases_wild(char *db_pattern)
     dump_tablespaces_for_databases(databases_to_dump);
   dump_databases(databases_to_dump);
   my_free(databases_to_dump);
+  DBUG_VOID_RETURN;
 }
 
-void pattern_query_cmd(char **argv, int argc)
-{
-  int i= 0;
-  if (argc > 1 && !opt_databases)
-    for (i= 1; i < argc; i++)
-      dump_tablespaces_for_database_wild(argv[0], argv[i]);
-  /*one database, tables matching the wildcard*/
-  else if (argc > 0)
-    for (i= 0; i < argc; i++)
-      dump_databases_wild(argv[i]);
-  /*databases matching the wildcard*/
-  else
-    printf("Incorrect usage of patterns \n");
-}
 
 int main(int argc, char **argv)
 {
@@ -7146,7 +7147,20 @@ t! */
       }
     }
     if (opt_wildcards)
-      pattern_query_cmd(argv, argc);
+    {
+      int i= 0;
+      if (argc > 1 && !opt_databases)
+        for (i= 1; i < argc; i++)
+          dump_tablespaces_for_database_wild(argv[0], argv[i]);
+      /*one database, tables matching the wildcard*/
+      else if (argc > 0)
+        for (i= 0; i < argc; i++)
+          dump_databases_wild(argv[i]);
+      /*databases matching the wildcard*/
+      else
+        die(EX_CONSCHECK,
+            "Incorrect usage of patterns \n");
+    }
     else
     {
       if (argc > 1 && !opt_databases)
