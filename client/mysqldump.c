@@ -320,7 +320,8 @@ static struct my_option my_long_options[] =
    "Dump several databases. Note the difference in usage; in this case no tables are given. All name arguments are regarded as database names. 'USE db_name;' will be included in the output.",
    &opt_databases, &opt_databases, 0, GET_BOOL, NO_ARG, 0, 0,
    0, 0, 0, 0},
-   {"wildcards", 'd', "Usage of wildcards in the table/database name. Without option \"databases\" wildcards can be used only in tables names, with option - in databases names.",
+   {"wildcards", 'd', "Usage of wildcards in the table/database name. Without option \"databases\" wildcards can be used only in tables names, "
+    "with option - in databases names.",
    &opt_wildcards, &opt_wildcards, &wildcard_lib, GET_BOOL, NO_ARG, 0, 0, 0,
    0, 0, 0},
 #ifdef DBUG_OFF
@@ -6943,13 +6944,13 @@ static void dynstr_realloc_checked(DYNAMIC_STRING *str, ulong additional_size)
 
 void dump_tablespaces_for_database_wild(char *db, char *pattern)
 {
-  DBUG_ENTER("dump_tablespaces_for_database_wild");
   int num= 1;
   int number_of_tables= 0;
   MYSQL_ROW row;
   char buff[NAME_LEN+30];
   MYSQL_RES *dbinfo;
   char **tables_to_dump;
+  DBUG_ENTER("dump_tablespaces_for_database_wild");
   mysql_select_db(mysql, db);
   my_snprintf(buff, sizeof(buff), "SHOW TABLES LIKE '%s'", pattern);
   if(mysql_query_with_error_report(mysql, &dbinfo, buff))
@@ -6983,12 +6984,12 @@ void dump_tablespaces_for_database_wild(char *db, char *pattern)
 
 void dump_databases_wild(char *db_pattern)
 {
-  DBUG_ENTER("dump_tablespaces_for_database_wild");
   MYSQL_RES *dbinfo;
   char buff[NAME_LEN+30];
   MYSQL_ROW row;
   int i= 0;
   char **databases_to_dump;
+  DBUG_ENTER("dump_tablespaces_for_database_wild");
   my_snprintf(buff, sizeof(buff), "SHOW DATABASES LIKE '%s'", db_pattern);
   if (mysql_query_with_error_report(mysql, &dbinfo, buff))
   {
@@ -7047,8 +7048,8 @@ int main(int argc, char **argv)
       free_resources();
       exit(EX_MYSQLERR);
     }
-
   }
+
   if (connect_to_db(current_host, current_user, opt_password))
   {
     free_resources();
@@ -7111,14 +7112,12 @@ int main(int argc, char **argv)
     goto err;
 
   if (opt_master_data && do_show_master_status(mysql, consistent_binlog_pos,
-                                               have_mariadb_gtid, opt_use_gtid)
-)
+                                               have_mariadb_gtid, opt_use_gtid))
     goto err;
   if (opt_slave_data && do_show_slave_status(mysql, opt_use_gtid,
                                              have_mariadb_gtid))
     goto err;
-  if (opt_single_transaction && do_unlock_tables(mysql)) /* unlock but no commi
-t! */
+  if (opt_single_transaction && do_unlock_tables(mysql)) /* unlock but no commit! */
     goto err;
   if (opt_alltspcs)
     dump_all_tablespaces();
@@ -7143,7 +7142,7 @@ t! */
       if (argument_length > NAME_LEN)
       {
         die(EX_CONSCHECK, "[ERROR] Argument '%s' is too long, it cannot be "
-           "name for any table or database.\n", argv[argument]);
+          "name for any table or database.\n", argv[argument]);
       }
     }
     if (opt_wildcards)
@@ -7191,8 +7190,7 @@ t! */
   if (opt_system & OPT_SYSTEM_SERVERS)
     dump_all_servers();
 
-  /* These must be last as they explictly change the current database to mysql
-*/
+  /* These must be last as they explictly change the current database to mysql */
   if (opt_system & OPT_SYSTEM_STATS)
     dump_all_stats();
 
