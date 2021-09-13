@@ -130,7 +130,7 @@ static my_bool  verbose= 0, opt_no_create_info= 0, opt_no_data= 0, opt_no_data_m
                 opt_events= 0, opt_comments_used= 0,
                 opt_alltspcs=0, opt_notspcs= 0, opt_logging,
                 opt_drop_trigger= 0, opt_wildcards=0;
-const char *wild_opts[]= {"ON", "OFF", NullS};      
+const char *wild_opts[]= {"ON", "OFF", NullS};
 TYPELIB wildcard_lib= {array_elements(wild_opts) - 1, "", wild_opts, NULL};
 #define OPT_SYSTEM_ALL 1
 #define OPT_SYSTEM_USERS 2
@@ -5035,7 +5035,7 @@ static int dump_tablespaces_for_tables(char *db, char **table_names, int tables)
                       "SELECT DISTINCT TABLESPACE_NAME FROM"
                       " INFORMATION_SCHEMA.PARTITIONS"
                       " WHERE"
-                      " TABLE_SCHEMA='", 256, 1024)         ;
+                      " TABLE_SCHEMA='", 256, 1024);
   dynstr_append_checked(&dynamic_where, name_buff);
   dynstr_append_checked(&dynamic_where, "' AND TABLE_NAME IN (");
 
@@ -7084,7 +7084,7 @@ int main(int argc, char **argv)
     this causes implicit commit starting mysql-5.5.
   */
   if (opt_lock_all_tables || opt_master_data ||
-      (opt_single_transaction && flush_logs)||
+      (opt_single_transaction && flush_logs) ||
       opt_delete_master_logs)
   {
     if (flush_logs || opt_delete_master_logs)
@@ -7119,11 +7119,13 @@ int main(int argc, char **argv)
     goto err;
   if (opt_single_transaction && do_unlock_tables(mysql)) /* unlock but no commit! */
     goto err;
+   
   if (opt_alltspcs)
     dump_all_tablespaces();
 
   if (extended_insert)
     init_dynamic_string_checked(&extended_row, "", 1024, 1024);
+
   if (opt_alldbs)
   {
     if (!opt_alltspcs && !opt_notspcs)
@@ -7178,6 +7180,7 @@ int main(int argc, char **argv)
       }
     }
   }
+
   if (opt_system & OPT_SYSTEM_PLUGINS)
     dump_all_plugins();
 
