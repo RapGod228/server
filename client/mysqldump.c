@@ -317,10 +317,13 @@ static struct my_option my_long_options[] =
    &create_options, &create_options, 0, GET_BOOL, NO_ARG, 1,
    0, 0, 0, 0, 0},
   {"databases", 'B',
-   "Dump several databases. Note the difference in usage; in this case no tables are given. All name arguments are regarded as database names. 'USE db_name;' will be included in the output.",
+   "Dump several databases. Note the difference in usage; in this case no "
+   "tables are given. All name arguments are regarded as database names. "
+   "'USE db_name;' will be included in the output.",
    &opt_databases, &opt_databases, 0, GET_BOOL, NO_ARG, 0, 0,
    0, 0, 0, 0},
-   {"wildcards", 'd', "Usage of wildcards in the table/database name. Without option \"databases\" wildcards can be used only in tables names, "
+   {"wildcards", 'd', "Usage of wildcards in the table/database name.\ Without "
+    "option \"databases\" wildcards can be used only in tables names, "
     "with option - in databases names.",
    &opt_wildcards, &opt_wildcards, &wildcard_lib, GET_BOOL, NO_ARG, 0, 0, 0,
    0, 0, 0},
