@@ -1,3 +1,5 @@
+
+
 -- source include/have_working_dns.inc
 # This test should work in embedded server after we fix mysqltest
 -- source include/not_embedded.inc
@@ -708,3 +710,41 @@ drop table t1;
 --echo # MDEV-15538 '-N' Produce html output wrong
 --echo #
 --exec $MYSQL -NHe "select 1 as a"
+
+
+--echo #
+--echo MDEV-23818
+--echo #
+
+create table t1(a int);
+insert into t1 values(1);
+
+lock tables t1 write;
+--exec $MYSQL test -a $MYSQL_TEST_DIR\std_data\mysql-script -e  "source script.txt;"
+unlock tables;
+drop table t1;
+
+--echo #
+--echo #
+--echo #
+
+--write_file $MYSQLTEST_VARDIR/tmp/commands.sql
+create table t1(a int);
+insert into t1 values(1);
+source scr.sql;
+drop table t1;
+EOF
+
+--write_file $MYSQLTEST_VARDIR/tmp/script.sql
+show tables;
+EOF
+
+--write_file $MYSQLTEST_VARDIR/tmp/scr.sql
+source script.sql;
+EOF
+
+--exec $MYSQL test -a $MYSQLTEST_VARDIR/tmp  < $MYSQLTEST_VARDIR/tmp/commands.sql
+--remove_file $MYSQLTEST_VARDIR/tmp/script.sql
+--remove_file $MYSQLTEST_VARDIR/tmp/scr.sql
+--remove_file $MYSQLTEST_VARDIR/tmp/commands.sql
+
