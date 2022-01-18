@@ -1,0 +1,141 @@
+diff --git a/client/mysql.cc b/client/mysql.cc
+index d22a3d49b16..a77ec316c30 100644
+--- a/client/mysql.cc
++++ b/client/mysql.cc
+@@ -204,6 +204,7 @@ unsigned short terminal_width= 80;
+ 
+ static uint opt_protocol=0;
+ static const char *opt_protocol_type= "";
++char* new_path;
+ static CHARSET_INFO *charset_info= &my_charset_latin1;
+ 
+ static uint protocol_to_force= MYSQL_PROTOCOL_DEFAULT;
+@@ -1039,6 +1040,9 @@ static COMMANDS commands[] = {
+   { (char *)NULL,       0, 0, 0, ""}
+ };
+ 
++const int MAX_NUMBER_OF_PATHS= 64;
++char* paths[MAX_NUMBER_OF_PATHS+1];
++int number_of_paths= 0;
+ static const char *load_default_groups[]=
+ { "mysql", "mariadb-client", "client", "client-server", "client-mariadb", 0 };
+ 
+@@ -1287,6 +1291,7 @@ int main(int argc,char *argv[])
+   sprintf(buff, "%s",
+ 	  "Type 'help;' or '\\h' for help. Type '\\c' to clear the current input statement.\n");
+   put_info(buff,INFO_INFO);
++  paths[number_of_paths]= (char *)"";
+   status.exit_status= read_and_execute(!status.batch);
+   if (opt_outfile)
+     end_tee();
+@@ -1341,6 +1346,8 @@ sig_handler mysql_end(int sig)
+   my_free(part_username);
+   my_free(default_prompt);
+   my_free(current_prompt);
++  for(; number_of_paths>0; number_of_paths--)
++     my_free(paths[number_of_paths-1]);
+   while (embedded_server_arg_count > 1)
+     my_free(embedded_server_args[--embedded_server_arg_count]);
+   mysql_server_end();
+@@ -1468,6 +1475,9 @@ static struct my_option my_long_options[] =
+    "Abort 'source filename' operations in case of errors",
+    &batch_abort_on_error, &batch_abort_on_error, 0,
+    GET_BOOL, NO_ARG, 0, 0, 0, 0, 0, 0},
++   {"add-path", 'a', "Add new path",
++   &new_path, &new_path, 0, GET_STR,  REQUIRED_ARG,
++   0, 0, 0, 0, 0, 0 },
+   {"auto-rehash", OPT_AUTO_REHASH,
+    "Enable automatic rehashing. One doesn't need to use 'rehash' to get table "
+    "and field completion, but startup and reconnecting may take a longer time. "
+@@ -1835,6 +1845,17 @@ get_one_option(const struct my_option *opt, const char *argument, const char *fi
+   case 'N':
+     column_names= 0;
+     break;
++  case 'a':
++    if (number_of_paths == MAX_NUMBER_OF_PATHS)
++    {
++        char buff[30];
++        sprintf(buff, "Too much script direction paths");
++        return put_info(buff, INFO_ERROR, 0);
++    }
++   paths[number_of_paths]= (char*)my_malloc(PSI_NOT_INSTRUMENTED,sizeof(char) * (FN_REFLEN+1), MYF(MY_WME)); 
++    strcpy(paths[number_of_paths], new_path);
++    number_of_paths++;
++    break;
+   case 'e':
+     status.batch= 1;
+     status.add_to_history= 0;
+@@ -4421,6 +4442,17 @@ com_connect(String *buffer, char *line)
+   return error;
+ }
+ 
++bool is_absolute(char* source)
++{
++#if defined(_WIN32)
++    if (source[1] == ':')
++      return true;
++    return false;
++#endif
++    if (source[0] == FN_LIBCHAR)
++      return true;
++    return false;
++}
+ 
+ static int com_source(String *buffer __attribute__((unused)),
+                       char *line)
+@@ -4435,7 +4467,7 @@ static int com_source(String *buffer __attribute__((unused)),
+   /* Skip space from file name */
+   while (my_isspace(charset_info,*line))
+     line++;
+-  if (!(param = strchr(line, ' ')))		// Skip command name
++  if (!(param= strchr(line, ' ')))		// Skip command name
+     return put_info("Usage: \\. <filename> | source <filename>", 
+ 		    INFO_ERROR, 0);
+   while (my_isspace(charset_info,*param))
+@@ -4445,12 +4477,32 @@ static int com_source(String *buffer __attribute__((unused)),
+                                my_iscntrl(charset_info,end[-1])))
+     end--;
+   end[0]=0;
+-  unpack_filename(source_name,source_name);
+-  /* open file name */
+-  if (!(sql_file = my_fopen(source_name, O_RDONLY | O_BINARY,MYF(0))))
++  int i = 0;
++  bool absolute_path= false;
++  if (is_absolute(source_name))
++      i= number_of_paths+1;
++  bool path_is_found= 0;
++  for(; i <= number_of_paths+1; i++)
++  {
++    char route[2*FN_REFLEN+10];
++    if(i==number_of_paths+1)
++      my_snprintf(route, sizeof(route),
++          "%s", source_name);
++    else
++      my_snprintf(route, sizeof(route),
++          "%s%c%s", paths[i], FN_LIBCHAR, source_name);
++    unpack_filename(route, route);
++    /* open file name */
++    if ((sql_file= my_fopen(route, O_RDONLY | O_BINARY, MYF(0))))
++    {
++        path_is_found= true;
++        break;
++    }
++  }
++  if (!path_is_found)
+   {
+-    char buff[FN_REFLEN+60];
+-    sprintf(buff,"Failed to open file '%s', error: %d", source_name,errno);
++    char buff[FN_REFLEN + 60];
++    sprintf(buff, "Failed to open file '%s', error: %d", source_name, errno);
+     return put_info(buff, INFO_ERROR, 0);
+   }
+ 
+@@ -5473,7 +5525,7 @@ static void report_progress(const MYSQL *mysql, uint stage, uint max_stage,
+                             double progress, const char *proc_info,
+                             uint proc_info_length)
+ {
+-  uint length= printf("Stage: %d of %d '%.*s' %6.3g%% of stage done",
++  uint length= printf("Stageref: %d of %d '%.*s' %6.3g%% of stage done",
+                       stage, max_stage, proc_info_length, proc_info, 
+                       progress);
+   if (length < last_progress_report_length)

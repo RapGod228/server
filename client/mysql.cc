@@ -204,7 +204,7 @@ unsigned short terminal_width= 80;
 
 static uint opt_protocol=0;
 static const char *opt_protocol_type= "";
-char* new_path;
+static char* new_path;
 static CHARSET_INFO *charset_info= &my_charset_latin1;
 
 static uint protocol_to_force= MYSQL_PROTOCOL_DEFAULT;
@@ -420,7 +420,7 @@ static COMMANDS commands[] = {
   { "DAY_MICROSECOND", 0, 0, 0, ""},
   { "DAY_MINUTE", 0, 0, 0, ""},
   { "DAY_SECOND", 0, 0, 0, ""},
-  { "DEALLOCATE", 0, 0, 0, ""},     
+  { "DEALLOCATE", 0, 0, 0, ""},
   { "DEC", 0, 0, 0, ""},
   { "DECIMAL", 0, 0, 0, ""},
   { "DECLARE", 0, 0, 0, ""},
@@ -1040,9 +1040,9 @@ static COMMANDS commands[] = {
   { (char *)NULL,       0, 0, 0, ""}
 };
 
-const int MAX_NUMBER_OF_PATHS= 64;
-char* paths[MAX_NUMBER_OF_PATHS+1];
-int number_of_paths= 0;
+static const int MAX_NUMBER_OF_PATHS= 64;
+static char* paths[MAX_NUMBER_OF_PATHS+1];
+static int number_of_paths= 0;
 static const char *load_default_groups[]=
 { "mysql", "mariadb-client", "client", "client-server", "client-mariadb", 0 };
 
@@ -1469,13 +1469,11 @@ static struct my_option my_long_options[] =
 {
   {"help", '?', "Display this help and exit.", 0, 0, 0, GET_NO_ARG, NO_ARG, 0,
    0, 0, 0, 0, 0},
-  {"help", 'I', "Synonym for -?", 0, 0, 0, GET_NO_ARG, NO_ARG, 0,
-   0, 0, 0, 0, 0},
   {"abort-source-on-error", OPT_ABORT_SOURCE_ON_ERROR,
    "Abort 'source filename' operations in case of errors",
    &batch_abort_on_error, &batch_abort_on_error, 0,
    GET_BOOL, NO_ARG, 0, 0, 0, 0, 0, 0},
-   {"add-path", 'a', "Add new path",
+   {"script-dir", 'i', "Add new path",
    &new_path, &new_path, 0, GET_STR,  REQUIRED_ARG,
    0, 0, 0, 0, 0, 0 },
   {"auto-rehash", OPT_AUTO_REHASH,
@@ -1845,12 +1843,12 @@ get_one_option(const struct my_option *opt, const char *argument, const char *fi
   case 'N':
     column_names= 0;
     break;
-  case 'a':
+  case 'i':
     if (number_of_paths == MAX_NUMBER_OF_PATHS)
     {
-        char buff[30];
-        sprintf(buff, "Too much script direction paths");
-        return put_info(buff, INFO_ERROR, 0);
+      char buff[30];
+      sprintf(buff, "Too much script direction paths");
+      return put_info(buff, INFO_ERROR, 0);
     }
     paths[number_of_paths]= (char*)my_malloc(PSI_NOT_INSTRUMENTED,
         sizeof(char) * (FN_REFLEN+1), MYF(MY_WME));
@@ -1968,7 +1966,6 @@ get_one_option(const struct my_option *opt, const char *argument, const char *fi
       protocol_to_force = SOCKET_PROTOCOL_TO_FORCE;
     }
     break;
-  case 'I':
   case '?':
     usage(0);
     status.exit_status= 0;
@@ -4446,13 +4443,13 @@ com_connect(String *buffer, char *line)
 bool is_absolute(char* source)
 {
 #if defined(_WIN32)
-    if (source[1] == ':')
-      return true;
-    return false;
+  if (source[1] == ':')
+    return true;
+  return false;
 #endif
-    if (source[0] == FN_LIBCHAR)
-      return true;
-    return false;
+  if (source[0] == FN_LIBCHAR)
+    return true;
+  return false;
 }
 
 static int com_source(String *buffer __attribute__((unused)),
@@ -4468,7 +4465,7 @@ static int com_source(String *buffer __attribute__((unused)),
   /* Skip space from file name */
   while (my_isspace(charset_info,*line))
     line++;
-  if (!(param= strchr(line, ' ')))		// Skip command name
+  if (!(param = strchr(line, ' ')))		// Skip command name
     return put_info("Usage: \\. <filename> | source <filename>", 
 		    INFO_ERROR, 0);
   while (my_isspace(charset_info,*param))
@@ -4481,14 +4478,13 @@ static int com_source(String *buffer __attribute__((unused)),
   int i= 0;
   bool absolute_path= false;
   if (is_absolute(source_name))
-      i= number_of_paths+1;
+    i= number_of_paths+1;
   bool path_is_found= 0;
   for(; i <= number_of_paths+1; i++)
   {
     char route[2*FN_REFLEN+10];
     if(i==number_of_paths+1)
-      my_snprintf(route, sizeof(route),
-          "%s", source_name);
+      my_snprintf(route, sizeof(route), "%s", source_name);
     else
       my_snprintf(route, sizeof(route),
           "%s%c%s", paths[i], FN_LIBCHAR, source_name);
@@ -4496,8 +4492,8 @@ static int com_source(String *buffer __attribute__((unused)),
     /* open file name */
     if ((sql_file= my_fopen(route, O_RDONLY | O_BINARY, MYF(0))))
     {
-        path_is_found= true;
-        break;
+      path_is_found= true;
+      break;
     }
   }
   if (!path_is_found)
